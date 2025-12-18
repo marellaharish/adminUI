@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* small baseline to match admin portals */
+html,
+body {
+  height: 100%;
+  background: rgb(248 250 252);
+  /* slate-50 */
+}
+
+:root {
+  --card-height: calc(100vh - 128px);
+}
+
+.transform-important {
+  transform: translateY(-50%) !important;
+}
