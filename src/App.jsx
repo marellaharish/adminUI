@@ -34,10 +34,13 @@ import {
   useNavigate,
   useParams,
   useLocation,
+  matchPath,
 } from "react-router-dom";
 import LocationEditPage from "./pages/locations/LocationManage";
 import LocationsMapPage from "./pages/locations/LocationsMapPage";
 import ProfileMenu from "./components/ui/ProfileMenu";
+import UsersPage from "./pages/users/UsersPage";
+import { SIDEBAR_NAV } from "./services/sidebar.config";
 
 /**
  * Streams.AI Admin (static demo)
@@ -446,38 +449,47 @@ function Topbar({ locationScope, setLocationScope }) {
   );
 }
 
+export function getSidebarSection(pathname) {
+  if (matchPath("/locations/*", pathname)) return "locations";
+  if (matchPath("/users/*", pathname)) return "users";
+  if (matchPath("/phone/*", pathname)) return "phone";
+  if (matchPath("/admin/*", pathname)) return "admin";
+  if (matchPath("/billing/*", pathname)) return "billing";
+  if (matchPath("/analytics/*", pathname)) return "analytics";
+  return null;
+}
+
 function Sidebar({ collapsed, setCollapsed }) {
-  const nav = [
-    { to: "/locations", label: "Locations", icon: MapPin },
-    // { to: "/users", label: "Users", icon: Users },
-    // { to: "/phone", label: "Phone System", icon: PhoneCall },
-    // { to: "/admin", label: "Admin Tools", icon: Settings },
-    // { to: "/billing", label: "Billing", icon: CreditCard },
-    // { to: "/analytics", label: "Analytics", icon: BarChart3 },
-  ];
+  const { pathname } = useLocation();
+  const section = getSidebarSection(pathname);
+  const nav = section ? SIDEBAR_NAV[section] : [];
 
   return (
-    <div
+    <aside
       className={cn(
-        "h-[calc(100vh-120px)] border-r border-slate-200 bg-white",
+        "h-[calc(100vh-120px)] border-r border-slate-200 bg-white transition-all",
         collapsed ? "w-16" : "w-64"
       )}
     >
-      <div className="flex items-center justify-between p-3">
+      {/* Header */}
+      <div className="flex items-center justify-between px-3 py-3">
         {!collapsed && (
-          <div className="text-sm font-semibold text-slate-800">Navigation</div>
+          <span className="text-sm font-semibold text-slate-800 capitalize">
+            {section}
+          </span>
         )}
         <Button
           variant="ghost"
           size="sm"
           className="rounded-lg"
           onClick={() => setCollapsed((v) => !v)}
-          aria-label="Toggle sidebar"
         >
           <Menu className="h-4 w-4" />
         </Button>
       </div>
-      <div className="px-2 pb-3">
+
+      {/* Navigation */}
+      <nav className="px-2 space-y-1">
         {nav.map((item) => {
           const Icon = item.icon;
           return (
@@ -494,13 +506,13 @@ function Sidebar({ collapsed, setCollapsed }) {
               }
               title={collapsed ? item.label : undefined}
             >
-              <Icon className="h-5 w-5" />
+              <Icon className="h-5 w-5 shrink-0" />
               {!collapsed && <span>{item.label}</span>}
             </NavLink>
           );
         })}
-      </div>
-    </div>
+      </nav>
+    </aside>
   );
 }
 
@@ -1698,7 +1710,7 @@ function AppRoutes() {
                   <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/locations" element={<LocationsListPage />} />
-                    <Route path="/users" element={<Placeholder title="Users" />} />
+                    <Route path="/users" element={<UsersPage />} />
                     <Route path="/phone" element={<Placeholder title="Phone System" />} />
                     <Route path="/admin" element={<Placeholder title="Admin Tools" />} />
                     <Route path="/billing" element={<Placeholder title="Billing" />} />
