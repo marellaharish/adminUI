@@ -41,6 +41,7 @@ import LocationsMapPage from "./pages/locations/LocationsMapPage";
 import ProfileMenu from "./components/ui/ProfileMenu";
 import UsersPage from "./pages/users/UsersPage";
 import { SIDEBAR_NAV } from "./services/sidebar.config";
+import UserEditPage from "./pages/users/UserEditPage";
 
 /**
  * Streams.AI Admin (static demo)
@@ -1716,6 +1717,7 @@ function AppRoutes() {
                     <Route path="/billing" element={<Placeholder title="Billing" />} />
                     <Route path="/analytics" element={<Placeholder title="Analytics" />} />
                     <Route path="/locations/:id" element={<LocationEditPage />} />
+                    <Route path="/users/:id" element={<UserEditPage />} />
 
 
                     <Route path="*" element={<Navigate to="/" replace />} />

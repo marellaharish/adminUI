@@ -17,6 +17,7 @@ import {
     ChevronDown,
     Users as UsersIcon,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 /**
  * UsersPage (static demo)
@@ -554,6 +555,7 @@ function Hint({ ok, text }) {
 // Users page
 // -----------------------------
 export default function UsersPage() {
+    const navigate = useNavigate();
     const [tab, setTab] = useState("users"); // users | groups
     const [scope, setScope] = useState("users"); // users | locations | all
 
@@ -882,6 +884,7 @@ export default function UsersPage() {
                                                         "border-b border-slate-100 hover:bg-slate-50",
                                                         isChecked ? "bg-[#2389d0]/[0.06]" : ""
                                                     )}
+                                                    onClick={() => navigate(`/users/${r.id}`)}
                                                 >
                                                     <td className="px-4 py-3">
                                                         <Checkbox
